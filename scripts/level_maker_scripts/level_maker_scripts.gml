@@ -222,9 +222,9 @@ function level_maker_load(_level_name) {
         var _tmirrored = _loaded_tile[5];
         var _tflipped = _loaded_tile[6];
         var _ttilemaplayername = _loaded_tile[7];
-        var _txscale = _loaded_tile[7];
-        var _tyscale = _loaded_tile[8];
-        var _tangle = _loaded_tile[9];
+        var _txscale = _loaded_tile[8];
+        var _tyscale = _loaded_tile[9];
+        var _tangle = _loaded_tile[10];
 
         var _tilelist = level_maker_get_tiles_list(_level_style);
         var _tile = undefined;
