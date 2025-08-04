@@ -53,8 +53,49 @@ if level_maker_is_editing() and not instance_exists(oPauseMenu) {
 					_new_image_index = _yscale == -1 ? _preview_index_vertical : 0;
 					_new_y_scale = 1;
 				}
+        
+        if _object.index == oSolidDay {
+          switch(selected_style) {
+            case LEVEL_STYLE.GRASS:
+              _sprite = sGrassGre;
+            break;
+            case LEVEL_STYLE.CLOUDS:
+              _sprite = sCloudDay;
+            break;
+            case LEVEL_STYLE.FLOWERS:
+              _sprite = sFlowerDay;
+            break;
+            case LEVEL_STYLE.SPACE:
+              _sprite = sSpacePurple;
+            break;
+            case LEVEL_STYLE.DUNGEON:
+              _sprite = sDunDay;
+            break;
+          }
+        }
+        
+        if _object.index == oSolidNight {
+          switch(selected_style) {
+            case LEVEL_STYLE.GRASS:
+              _sprite = sGrassOre;
+            break;
+            case LEVEL_STYLE.CLOUDS:
+              _sprite = sCloudNight;
+            break;
+            case LEVEL_STYLE.FLOWERS:
+              _sprite = sFlowerNight;
+            break;
+            case LEVEL_STYLE.SPACE:
+              _sprite = sSpaceGre;
+            break;
+            case LEVEL_STYLE.DUNGEON:
+              _sprite = sDunNight;
+            break;
+          }
+          _new_image_index = 2;
+        }
 
-				draw_sprite_ext(_sprite, _new_image_index, _xx + _sprite_offset_x,_yy + _sprite_offset_y, _new_x_scale, _new_y_scale, _obj_angle, c_white, 1);
+				draw_sprite_ext(_sprite, _new_image_index, _xx + _sprite_offset_x, _yy + _sprite_offset_y, _new_x_scale, _new_y_scale, _obj_angle, c_white, 1);
 			}
 		}	
 	}
@@ -78,7 +119,8 @@ if current_layer == LEVEL_CURRENT_LAYER.OBJECTS {
 		var _new_image_index = 0;
 		var _new_x_scale = image_xscale;
 		var _new_y_scale = image_yscale;
-		var sprite = object_get_sprite(cursor_object_hovering.index);
+    var _object = cursor_object_hovering.index;
+		var _sprite = object_get_sprite(_object);
 		var _preview_index_horizontal = cursor_object_hovering.preview_image_index_horizontal;
 		var _preview_index_vertical = cursor_object_hovering.preview_image_index_vertical;
 				
@@ -91,9 +133,50 @@ if current_layer == LEVEL_CURRENT_LAYER.OBJECTS {
 			_new_image_index = image_yscale == -1 ? _preview_index_vertical : 0;
 			_new_y_scale = 1;
 		}
+    
+    if _object == oSolidDay {
+      switch(selected_style) {
+        case LEVEL_STYLE.GRASS:
+          _sprite = sGrassGre;
+        break;
+        case LEVEL_STYLE.CLOUDS:
+          _sprite = sCloudDay;
+        break;
+        case LEVEL_STYLE.FLOWERS:
+          _sprite = sFlowerDay;
+        break;
+        case LEVEL_STYLE.SPACE:
+          _sprite = sSpacePurple;
+        break;
+        case LEVEL_STYLE.DUNGEON:
+          _sprite = sDunDay;
+        break;
+      }
+    }
+        
+    if _object == oSolidNight {
+      switch(selected_style) {
+        case LEVEL_STYLE.GRASS:
+          _sprite = sGrassOre;
+        break;
+        case LEVEL_STYLE.CLOUDS:
+          _sprite = sCloudNight;
+        break;
+        case LEVEL_STYLE.FLOWERS:
+          _sprite = sFlowerNight;
+        break;
+        case LEVEL_STYLE.SPACE:
+          _sprite = sSpaceGre;
+        break;
+        case LEVEL_STYLE.DUNGEON:
+          _sprite = sDunNight;
+        break;
+      }
+      _new_image_index = 2;
+    }
 	
 		var alpha = 0.6;
-		draw_sprite_ext(sprite_index, _new_image_index, x + item_preview_offset_x, y + item_preview_offset_y, _new_x_scale, _new_y_scale, image_angle, c_white, alpha);
+		draw_sprite_ext(_sprite, _new_image_index, x + item_preview_offset_x, y + item_preview_offset_y, _new_x_scale, _new_y_scale, image_angle, c_white, alpha);
 	}
 } else {
 	if cursor != LEVEL_CURSOR_TYPE.ERASER
