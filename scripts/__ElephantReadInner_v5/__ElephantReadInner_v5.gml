@@ -1,4 +1,4 @@
-function __ElephantReadInner_v4(_buffer, _datatype)
+function __ElephantReadInner_v5(_buffer, _datatype)
 {
     static _system                  = __ElephantSystem();
     static _constructorIndexesMap   = _system.__constructorIndexesMap;
@@ -31,7 +31,7 @@ function __ElephantReadInner_v4(_buffer, _datatype)
                 var _i = 0;
                 repeat(_length)
                 {
-                    _array[@ _i] = __ElephantReadInner_v4(_buffer, _common_datatype);
+                    _array[@ _i] = __ElephantReadInner_v5(_buffer, _common_datatype);
                     ++_i;
                 }
             }
@@ -106,7 +106,7 @@ function __ElephantReadInner_v4(_buffer, _datatype)
                 repeat(_length)
                 {
                     var _name = buffer_read(_buffer, buffer_string);
-                    _struct[$ _name] = __ElephantReadInner_v4(_buffer, buffer_any);
+                    _struct[$ _name] = __ElephantReadInner_v5(_buffer, buffer_any);
                     ++_i;
                 }
             }
@@ -122,12 +122,24 @@ function __ElephantReadInner_v4(_buffer, _datatype)
                         var _names = variable_struct_get_names(_schema);
                         array_sort(_names, true);
                         
+                        //Read which variables we didn't serialize due to there being no difference with a freshly constructed struct
+                        while(true)
+                        {
+                            var _skippedVariable = buffer_read(_buffer, buffer_u16)-1; //Correct for off-by-one that lets us have a null terminator
+                            if (_skippedVariable < 0) break;
+                            _names[@ _skippedVariable] = undefined;
+                        }
+                        
                         //Iterate over the variable names and read them
                         var _i = 0;
                         repeat(array_length(_names))
                         {
                             var _name = _names[_i];
-                            _struct[$ _name] = __ElephantReadInner_v4(_buffer, _schema[$ _name]);
+                            if (_name != undefined)
+                            {
+                                _struct[$ _name] = __ElephantReadInner_v5(_buffer, _schema[$ _name]);
+                            }
+                            
                             ++_i;
                         }
                     }
@@ -158,7 +170,7 @@ function __ElephantReadInner_v4(_buffer, _datatype)
             repeat(_length)
             {
                 var _name = buffer_read(_buffer, buffer_string);
-                _struct[$ _name] = __ElephantReadInner_v4(_buffer, buffer_any);
+                _struct[$ _name] = __ElephantReadInner_v5(_buffer, buffer_any);
                 ++_i;
             }
             
@@ -168,7 +180,7 @@ function __ElephantReadInner_v4(_buffer, _datatype)
     else if (_datatype == buffer_any)
     {
         _datatype = buffer_read(_buffer, buffer_u8);
-        return __ElephantReadInner_v4(_buffer,_datatype);
+        return __ElephantReadInner_v5(_buffer,_datatype);
     }
     else if (_datatype == buffer_undefined)
     {

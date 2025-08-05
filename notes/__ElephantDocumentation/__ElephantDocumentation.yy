@@ -1,7 +1,7 @@
 {
   "$GMNotes":"",
-  "%Name":"__Elephant_Documentation",
-  "name":"__Elephant_Documentation",
+  "%Name":"__ElephantDocumentation",
+  "name":"__ElephantDocumentation",
   "parent":{
     "name":"Elephant",
     "path":"folders/Libraries/Elephant.yy",

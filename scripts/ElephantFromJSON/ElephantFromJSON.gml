@@ -6,27 +6,31 @@
 
 function ElephantFromJSON(_target)
 {
-    global.__elephantFound      = ds_map_create();
-    global.__elephantFoundCount = 0;
+    static _system                  = __ElephantSystem();
+    static _foundMap                = _system.__foundMap;
+    static _postReadCallbackOrder   = _system.__postReadCallbackOrder;
+    static _postReadCallbackVersion = _system.__postReadCallbackVersion;
     
-    global.__elephantPostReadCallbackOrder   = ds_list_create();
-    global.__elephantPostReadCallbackVersion = ds_list_create();
+    ds_map_clear(_foundMap);
+    if (ELEPHANT_FROM_JSON_ACCEPT_LEGACY_CIRCULAR_REFERENCE) _system.__foundCount = 0;
+    ds_list_clear(_postReadCallbackOrder);
+    ds_list_clear(_postReadCallbackVersion);
     
     ELEPHANT_IS_DESERIALIZING = true;
     ELEPHANT_SCHEMA_VERSION   = undefined;
     
-    var _duplicate = __ElephantFromJSONInner(_target);
+    var _duplicate = __ElephantFromJSONInner(_target, "");
     
     //Now execute post-read callbacks in the order that the structs were created
     var _i = 0;
-    repeat(ds_list_size(global.__elephantPostReadCallbackOrder))
+    repeat(ds_list_size(_postReadCallbackOrder))
     {
-        with(global.__elephantPostReadCallbackOrder[| _i])
+        with(_postReadCallbackOrder[| _i])
         {
             //Execute the post-read callback if we can
             if (variable_struct_exists(self, __ELEPHANT_POST_READ_METHOD_NAME))
             {
-                ELEPHANT_SCHEMA_VERSION = global.__elephantPostReadCallbackVersion[| _i];
+                ELEPHANT_SCHEMA_VERSION = _postReadCallbackVersion[| _i];
                 self[$ __ELEPHANT_POST_READ_METHOD_NAME]();
             }
         }
@@ -34,10 +38,9 @@ function ElephantFromJSON(_target)
         ++_i;
     }
     
-    ds_map_destroy(global.__elephantFound);
-    
-    ds_list_destroy(global.__elephantPostReadCallbackOrder);
-    ds_list_destroy(global.__elephantPostReadCallbackVersion);
+    ds_map_clear(_foundMap);
+    ds_list_clear(_postReadCallbackOrder);
+    ds_list_clear(_postReadCallbackVersion);
     
     ELEPHANT_IS_DESERIALIZING = undefined;
     ELEPHANT_SCHEMA_VERSION   = undefined;
@@ -45,13 +48,18 @@ function ElephantFromJSON(_target)
     return _duplicate;
 }
 
-function __ElephantFromJSONInner(_target)
+function __ElephantFromJSONInner(_target, _longName)
 {
+    static _system                  = __ElephantSystem();
+    static _foundMap                = _system.__foundMap;
+    static _postReadCallbackOrder   = _system.__postReadCallbackOrder;
+    static _postReadCallbackVersion = _system.__postReadCallbackVersion;
+    
     if (is_struct(_target))
     {
         if (variable_struct_exists(_target, __ELEPHANT_JSON_CIRCULAR_REF))
         {
-            return global.__elephantFound[? _target[$ __ELEPHANT_JSON_CIRCULAR_REF]];
+            return _foundMap[? _target[$ __ELEPHANT_JSON_CIRCULAR_REF]];
         }
         else if (variable_struct_exists(_target, __ELEPHANT_JSON_CONSTRUCTOR))
         {
@@ -77,12 +85,16 @@ function __ElephantFromJSONInner(_target)
             }
             
             //Execute the pre-read callback if we can
-            ELEPHANT_SCHEMA_VERSION = _version;
             var _callback = _struct[$ __ELEPHANT_PRE_READ_METHOD_NAME];
-            if (is_method(_callback)) method(_struct, _callback)();
+            if (is_method(_callback))
+            {
+                ELEPHANT_SCHEMA_VERSION = _version;
+                method(_struct, _callback)();
+            }
             
-            ds_list_add(global.__elephantPostReadCallbackOrder,   _struct);
-            ds_list_add(global.__elephantPostReadCallbackVersion, _version);
+            //Add this struct to our lists so we can call its post-read method later
+            ds_list_add(_postReadCallbackOrder,   _struct);
+            ds_list_add(_postReadCallbackVersion, _version);
         }
         else
         {
@@ -91,8 +103,14 @@ function __ElephantFromJSONInner(_target)
             var _version = undefined;
         }
         
-        global.__elephantFound[? global.__elephantFoundCount] = _struct;
-        global.__elephantFoundCount++;
+        //Store a reference to this struct so if we see a circular reference later we can reconstruct it
+        _foundMap[? _longName] = _struct;
+        
+        if (ELEPHANT_FROM_JSON_ACCEPT_LEGACY_CIRCULAR_REFERENCE)
+        {
+            _foundMap[? _system.__foundCount] = _struct;
+            _system.__foundCount++;
+        }
         
         var _names = variable_struct_get_names(_target);
         
@@ -106,7 +124,7 @@ function __ElephantFromJSONInner(_target)
             var _name = _names[_i];
             if ((_name != __ELEPHANT_JSON_CONSTRUCTOR) && (_name != __ELEPHANT_JSON_SCHEMA_VERSION))
             {
-                _struct[$ _name] = __ElephantFromJSONInner(_target[$ _name]);
+                _struct[$ _name] = __ElephantFromJSONInner(_target[$ _name], _longName + "." + _name);
             }
             
             ++_i;
@@ -119,13 +137,19 @@ function __ElephantFromJSONInner(_target)
         var _length = array_length(_target);
         var _array = array_create(_length);
         
-        global.__elephantFound[? global.__elephantFoundCount] = _array;
-        global.__elephantFoundCount++;
+        //Store a reference to this struct so if we see a circular reference later we can reconstruct it
+        _foundMap[? _longName] = _array;
+        
+        if (ELEPHANT_FROM_JSON_ACCEPT_LEGACY_CIRCULAR_REFERENCE)
+        {
+            _foundMap[? _system.__foundCount] = _array;
+            _system.__foundCount++;
+        }
         
         var _i = 0;
         repeat(_length)
         {
-            _array[@ _i] = __ElephantFromJSONInner(_target[_i]);
+            _array[@ _i] = __ElephantFromJSONInner(_target[_i], _longName + "[" + string(_i) + "]");
             ++_i;
         }
         

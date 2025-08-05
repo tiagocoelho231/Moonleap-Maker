@@ -1,12 +1,15 @@
 function __ElephantReadInner_v1(_buffer, _datatype)
 {
+    static _system                = __ElephantSystem();
+    static _constructorIndexesMap = _system.__constructorIndexesMap;
+    
     if (_datatype >= 32)
     {
-        var _instanceof = global.__elephantConstructorIndexes[$ _datatype];
+        var _instanceof = _constructorIndexesMap[? _datatype];
         if (_instanceof == undefined)
         {
             _instanceof = buffer_read(_buffer, buffer_string);
-            global.__elephantConstructorIndexes[$ _datatype] = _instanceof;
+            _constructorIndexesMap[? _datatype] = _instanceof;
         }
         
         var _constructorFunction = asset_get_index(_instanceof);
@@ -29,9 +32,12 @@ function __ElephantReadInner_v1(_buffer, _datatype)
         var _version = buffer_read(_buffer, buffer_u8);
         
         //Execute the pre-read callback if we can
-        ELEPHANT_SCHEMA_VERSION = _version;
         var _callback = _struct[$ __ELEPHANT_PRE_READ_METHOD_NAME];
-        if (is_method(_callback)) method(_struct, _callback)();
+        if (is_method(_callback))
+        {
+            ELEPHANT_SCHEMA_VERSION = _version;
+            method(_struct, _callback)();
+        }
         
         if (_version > 0)
         {
@@ -50,7 +56,7 @@ function __ElephantReadInner_v1(_buffer, _datatype)
                     repeat(array_length(_names))
                     {
                         var _name = _names[_i];
-                        _struct[$ _name] = global.__elephantReadFunction(_buffer, _schema[$ _name]);
+                        _struct[$ _name] = __ElephantReadInner_v1(_buffer, _schema[$ _name]);
                         ++_i;
                     }
                 }
@@ -72,15 +78,18 @@ function __ElephantReadInner_v1(_buffer, _datatype)
             repeat(_extraSize)
             {
                 var _name = buffer_read(_buffer, buffer_string);
-                _struct[$ _name] = global.__elephantReadFunction(_buffer, buffer_any);
+                _struct[$ _name] = __ElephantReadInner_v1(_buffer, buffer_any);
                 ++_i;
             }
         }
         
         //Execute the post-read callback if we can
-        ELEPHANT_SCHEMA_VERSION = _version;
         var _callback = _struct[$ __ELEPHANT_POST_READ_METHOD_NAME];
-        if (is_method(_callback)) method(_struct, _callback)();
+        if (is_method(_callback))
+        {
+            ELEPHANT_SCHEMA_VERSION = _version;
+            method(_struct, _callback)();
+        }
         
         return _struct;
     }
@@ -95,7 +104,7 @@ function __ElephantReadInner_v1(_buffer, _datatype)
             var _i = 0;
             repeat(_size)
             {
-                _array[@ _i] = global.__elephantReadFunction(_buffer, _common_datatype);
+                _array[@ _i] = __ElephantReadInner_v1(_buffer, _common_datatype);
                 ++_i;
             }
         }
@@ -111,7 +120,7 @@ function __ElephantReadInner_v1(_buffer, _datatype)
         repeat(_size)
         {
             var _name = buffer_read(_buffer, buffer_string);
-            _struct[$ _name] = global.__elephantReadFunction(_buffer, buffer_any);
+            _struct[$ _name] = __ElephantReadInner_v1(_buffer, buffer_any);
             ++_i;
         }
         
@@ -120,7 +129,7 @@ function __ElephantReadInner_v1(_buffer, _datatype)
     else if (_datatype == buffer_any)
     {
         _datatype = buffer_read(_buffer, buffer_u8);
-        return global.__elephantReadFunction(_buffer,_datatype);
+        return __ElephantReadInner_v1(_buffer,_datatype);
     }
     else if (_datatype == buffer_undefined)
     {

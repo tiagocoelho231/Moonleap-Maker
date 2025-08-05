@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"ElephantFromJSON",
+  "%Name":"__ElephantValueToDatatype",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ElephantFromJSON",
+  "name":"__ElephantValueToDatatype",
   "parent":{
     "name":"An elephant never forgets",
     "path":"folders/Libraries/Elephant/(System)/An elephant never forgets.yy",

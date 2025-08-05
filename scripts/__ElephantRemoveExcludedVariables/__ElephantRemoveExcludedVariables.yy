@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"ElephantFromJSON",
+  "%Name":"__ElephantRemoveExcludedVariables",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ElephantFromJSON",
+  "name":"__ElephantRemoveExcludedVariables",
   "parent":{
     "name":"An elephant never forgets",
     "path":"folders/Libraries/Elephant/(System)/An elephant never forgets.yy",
