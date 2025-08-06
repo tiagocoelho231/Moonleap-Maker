@@ -14,8 +14,6 @@ cleared_level = false;
 
 start_pos_x = x;
 start_pos_y = y;
-//if(image_index == 6){
-//}
 
 small_size = 20;
 

@@ -1,8 +1,22 @@
-enum LEVEL_CURRENT_LAYER { FOREGROUND, OBJECTS, BACKGROUND_1, BACKGROUND_2}
+enum LEVEL_CURRENT_LAYER { FOREGROUND, OBJECTS, BACKGROUND_1, BACKGROUND_2 }
 enum LEVEL_CURSOR_TYPE { NOTHING, CURSOR, FINGER, ERASER, CANCEL }
 enum LEVEL_STYLE { GRASS, CLOUDS, FLOWERS, SPACE, DUNGEON,LENGTH }
 enum LEVEL_EDITOR_MODE { EDITING, TESTING }
 enum SPRITE_ORIGIN { TOP_LEFT, CENTER, BOTTOM, OFFSET5 }
+enum LEVEL_BUTTON_IMAGE_INDEX { 
+	NONE = 0, 
+	MOVE_OBJECT_GROUP_UP = 1, 
+	MOVE_OBJECT_GROUP_DOWN = 2, 
+	CREATOR_MENU = 3, 
+	SAVE_LEVEL = 4, 
+	LOAD_LEVEL = 5, 
+	TEST_LEVEL = 6, 
+	HELP = 7, 
+	CHANGE_STYLE = 8, 
+	ERASER = 9, 
+	CLEAR_LEVEL = 10, 
+	CHANGE_LAYER = 11
+}
 
 /// @description A "Level Maker Object" constructor. Use this as base to create
 /// an object for the level editor.
@@ -27,7 +41,7 @@ function LMObject(_object_index, _object_size_x, _object_size_y, _origin_type = 
 	preview_image_index_vertical = undefined;
 	
 	sprite_button_sprite_index = undefined;
-	sprite_button_image_index = 0;
+	sprite_button_image_index = LEVEL_BUTTON_IMAGE_INDEX.NONE;
 	sprite_button_x_offset = 0;
 	sprite_button_y_offset = 0;
 	sprite_button_part_left = 0;
