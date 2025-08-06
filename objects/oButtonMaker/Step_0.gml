@@ -73,7 +73,7 @@ if is_mouse_hover and mouse_check_button(mb_left) {
 // if image_index == 0 and is_mouse_left_pressing {}
 
 // Move object group up
-if image_index == 1 and (is_mouse_left_pressing or key_down or mouse_wheel_up())
+if image_index == 1 and (is_mouse_left_pressing or key_up or mouse_wheel_up())
 {
 	with(oLevelMaker)
 	{
@@ -102,7 +102,7 @@ if image_index == 1 and (is_mouse_left_pressing or key_down or mouse_wheel_up())
 }
 
 // Move object group down
-if image_index == 2 and (is_mouse_left_pressing or key_up or mouse_wheel_down()) {
+if image_index == 2 and (is_mouse_left_pressing or key_down or mouse_wheel_down()) {
 	with(oLevelMaker) {
 		var _pages_length = current_layer == LEVEL_CURRENT_LAYER.OBJECTS ? array_length(obj) - 1 : array_length(tiles) - 1;
 		
