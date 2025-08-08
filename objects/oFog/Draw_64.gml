@@ -3,7 +3,6 @@ if instance_exists(oPauseMenu) or instance_exists(oPortal) {exit;}
 draw_sprite_tiled(sprite_index,image_index,round(x),y-8)
 
 pal_swap_set(sTestpal,1,false)
-
 draw_surface(application_surface,0,0);
 pal_swap_reset()
 

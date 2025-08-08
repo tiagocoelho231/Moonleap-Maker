@@ -279,6 +279,7 @@
     {"id":{"name":"oFlowerDayRamp","path":"objects/oFlowerDayRamp/oFlowerDayRamp.yy",},},
     {"id":{"name":"oFlowerNight","path":"objects/oFlowerNight/oFlowerNight.yy",},},
     {"id":{"name":"oFog","path":"objects/oFog/oFog.yy",},},
+    {"id":{"name":"oFogMaker","path":"objects/oFogMaker/oFogMaker.yy",},},
     {"id":{"name":"oFollow1","path":"objects/oFollow1/oFollow1.yy",},},
     {"id":{"name":"oFollow2","path":"objects/oFollow2/oFollow2.yy",},},
     {"id":{"name":"oFollow3","path":"objects/oFollow3/oFollow3.yy",},},

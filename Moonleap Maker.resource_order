@@ -115,6 +115,7 @@
     {"name":"oFlowerDayRamp","order":5,"path":"objects/oFlowerDayRamp/oFlowerDayRamp.yy",},
     {"name":"oFlowerNight","order":6,"path":"objects/oFlowerNight/oFlowerNight.yy",},
     {"name":"oFog","order":16,"path":"objects/oFog/oFog.yy",},
+    {"name":"oFogMaker","order":27,"path":"objects/oFogMaker/oFogMaker.yy",},
     {"name":"oFollow1","order":2,"path":"objects/oFollow1/oFollow1.yy",},
     {"name":"oFollow2","order":3,"path":"objects/oFollow2/oFollow2.yy",},
     {"name":"oFollow3","order":4,"path":"objects/oFollow3/oFollow3.yy",},
