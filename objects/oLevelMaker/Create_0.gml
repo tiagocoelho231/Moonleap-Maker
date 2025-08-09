@@ -790,7 +790,7 @@ start_level = function() {
 		return;
 	}
 	
-   mode = LEVEL_EDITOR_MODE.TESTING;
+  mode = LEVEL_EDITOR_MODE.TESTING;
 	//instance_destroy(oPause);
 	audio_play_sfx(sndStarGame, false, -18.3, 1);
 	
@@ -842,9 +842,8 @@ start_level = function() {
 			var _top_left_y = _object_grid.top_left_y;
 			
 			if is_struct(_object_grid)
-				and _top_left_x == _x 
-				and _top_left_y == _y
-			{
+			and _top_left_x == _x 
+			and _top_left_y == _y {
 				var _object = _object_grid.object;
 				var _xscale = _object_grid.xscale;
 				var _yscale = _object_grid.yscale;
@@ -942,18 +941,22 @@ start_level = function() {
 	with(oLevelMaker) {
 		scr_update_style();
 	}
+  
+  if selected_style == LEVEL_STYLE.DUNGEON {
+    instance_create_layer(0, 0, "Instances_2", oFogMaker);
+  }
 
 	// =========================
 	// EFFECTS ENABLING
 	// =========================
-    var _fx_dust = layer_get_id("FX_Dust");
+  var _fx_dust = layer_get_id("FX_Dust");
     
-    layer_set_visible(_fx_dust, true);
+  layer_set_visible(_fx_dust, true);
 
-    //if selected_style == LEVEL_STYLE.DUNGEON then
-    //    instance_create_layer(0, 0, "Instances_2", oFog);
+  //if selected_style == LEVEL_STYLE.DUNGEON then
+  //    instance_create_layer(0, 0, "Instances_2", oFog);
 	
-    level_maker_change_fx();
+  level_maker_change_fx();
 
 	with(oBrokenStone) {
 		brokenright = instance_place(x+1,y,oBrokenStone)
@@ -1000,7 +1003,7 @@ end_level_and_return_to_editor = function() {
 	instance_destroy(oKeyFollow, false);
 	instance_destroy(oKeyFollow2, false);
 	instance_destroy(oKeyFollow3, false);
-	//instance_destroy(oFog);
+	instance_destroy(oFogMaker);
 	
   // Disable layer effects
   var _fx_dust = layer_get_id("FX_Dust");
