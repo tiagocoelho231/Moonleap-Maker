@@ -1,17 +1,22 @@
 {
   "$GMObject":"",
-  "%Name":"oPermaSpike",
+  "%Name":"oFogMaker",
   "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":64,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"oPermaSpike",
+  "name":"oFogMaker",
   "overriddenProperties":[],
   "parent":{
-    "name":"Solids",
-    "path":"folders/Objects/Solids.yy",
+    "name":"Objects",
+    "path":"folders/Objects.yy",
   },
-  "parentObjectId":null,
+  "parentObjectId":{
+    "name":"oFog",
+    "path":"objects/oFog/oFog.yy",
+  },
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -30,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sPermaSpike",
-    "path":"sprites/sPermaSpike/sPermaSpike.yy",
+    "name":"sFog",
+    "path":"sprites/sFog/sFog.yy",
   },
   "spriteMaskId":null,
   "visible":true,
